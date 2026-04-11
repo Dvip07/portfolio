@@ -1,0 +1,11 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/api/chat/route": "/api/chat",
+  "/contact/page": "/contact",
+  "/experience/page": "/experience",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
+  "/publications/page": "/publications"
+}
