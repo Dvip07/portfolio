@@ -5,7 +5,7 @@ export const siteConfig = {
     "Six Sigma Black Belt | Forbes Council Member | Engineering resilient, data-driven supply chains across industries.",
   email: "jaypatel.math@gmail.com",
   phone: "+1(480) 335-1808",
-  linkedin: "https://linkedin.com/in/jaypatel", // update with real URL
+  linkedin: "https://www.linkedin.com/in/jaypatelmath/", // update with real URL
 };
 
 export const stats = [
