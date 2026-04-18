@@ -14,11 +14,7 @@ export const metadata: Metadata = {
     "Portfolio of Jay Patel — Global Supply Chain & Operations Leader, Six Sigma Black Belt, Forbes Council Member.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>

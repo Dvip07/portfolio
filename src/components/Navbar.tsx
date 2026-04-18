@@ -1,22 +1,43 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/experience", label: "Experience" },
-  { href: "/publications", label: "Publications" },
-  { href: "/contact", label: "Contact" },
+  { href: "#about", label: "About" },
+  { href: "#experience", label: "Experience" },
+  { href: "#publications", label: "Publications" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [active, setActive] = useState("");
+
+  useEffect(() => {
+    const sections = links.map((l) => l.href.replace("#", ""));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollTo = (href: string) => {
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    setMobileOpen(false);
+  };
 
   return (
     <nav
@@ -24,23 +45,27 @@ export default function Navbar() {
       style={{ background: "var(--nav-bg)", borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="text-lg font-semibold tracking-tight" style={{ color: "var(--gold)" }}>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="text-lg font-semibold tracking-tight"
+          style={{ color: "var(--gold)" }}
+        >
           JP
-        </Link>
+        </button>
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {links.map((link) => (
-            <Link
+            <button
               key={link.href}
-              href={link.href}
+              onClick={() => scrollTo(link.href)}
               className="text-sm transition-colors duration-200"
               style={{
-                color: pathname === link.href ? "var(--gold)" : "var(--fg-muted)",
+                color: active === link.href.replace("#", "") ? "var(--gold)" : "var(--fg-muted)",
               }}
             >
               {link.label}
-            </Link>
+            </button>
           ))}
           <ThemeToggle />
         </div>
@@ -64,7 +89,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -76,17 +100,16 @@ export default function Navbar() {
           >
             <div className="flex flex-col px-6 py-4 gap-4">
               {links.map((link) => (
-                <Link
+                <button
                   key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-sm transition-colors"
+                  onClick={() => scrollTo(link.href)}
+                  className="text-sm text-left transition-colors"
                   style={{
-                    color: pathname === link.href ? "var(--gold)" : "var(--fg-muted)",
+                    color: active === link.href.replace("#", "") ? "var(--gold)" : "var(--fg-muted)",
                   }}
                 >
                   {link.label}
-                </Link>
+                </button>
               ))}
             </div>
           </motion.div>
