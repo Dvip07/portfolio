@@ -38,7 +38,7 @@ CSCMP, ASCM, ISM, INFORMS, CSSC, CPIM, Six Sigma Black Belt, Forbes Business Cou
 - Actively authoring and reviewing academic papers on Digital Twin technology
 
 ## Contact
-- Email: jaypatel.math@gmail.com
+- Email: info@jaypatel.world
 - Phone: +1(480) 335-1808
 - LinkedIn: Available on his website
 

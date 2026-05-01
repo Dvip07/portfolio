@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import AnimatedCounter from "@/components/AnimatedCounter";
 import SectionReveal from "@/components/SectionReveal";
 import NetworkMesh from "@/components/NetworkMesh";
+import ImageCarousel from "@/components/ImageCarousel";
 import { siteConfig, stats, featuredIn } from "@/data/resume";
 import { publications, reviewerRoles, type PublicationType } from "@/data/publications";
 import { experiences } from "@/data/experience";
@@ -62,7 +63,7 @@ export default function Home() {
     setFormStatus("sending");
     const form = e.currentTarget;
     try {
-      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+      const res = await fetch("https://formspree.io/f/mzdobyoj", {
         method: "POST",
         body: new FormData(form),
         headers: { Accept: "application/json" },
@@ -78,11 +79,11 @@ export default function Home() {
       <section ref={heroRef} id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0" style={{ background: "var(--bg)" }}>
           <NetworkMesh />
-          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, var(--bg) 72%)" }} />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 50%, var(--bg) 95%)", opacity: 0.5 }} />
           <motion.div
-            className="absolute inset-0 opacity-20"
+            className="absolute inset-0"
             style={{ background: "radial-gradient(circle at 30% 50%, var(--gold-glow) 0%, transparent 50%), radial-gradient(circle at 70% 50%, var(--gold-subtle) 0%, transparent 50%)" }}
-            animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.35, 0.2] }}
+            animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.6, 0.4] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
         </div>
@@ -142,15 +143,28 @@ export default function Home() {
       {/* ── ABOUT ────────────────────────────────────────────────────────── */}
       <section id="about" className="py-24 px-6" style={{ borderTop: "1px solid var(--border)" }}>
         <SectionReveal className="max-w-6xl mx-auto">
-          <p className="text-sm uppercase tracking-[0.3em] mb-4" style={{ color: "var(--gold)" }}>About</p>
-          <div className="grid md:grid-cols-2 gap-16 items-start">
+          <p className="text-sm uppercase tracking-[0.3em] mb-10" style={{ color: "var(--gold)" }}>About</p>
+          <div className="grid md:grid-cols-[1.3fr_1.2fr_1fr] gap-12 items-start">
+
+            {/* Carousel */}
+            <ImageCarousel
+              images={[
+                { src: "/images/jay-1.png", alt: "Jay Patel" },
+                // { src: "/images/jay-2.jpg", alt: "Jay Patel speaking" },
+                { src: "/images/jay-3.jpg", alt: "Jay Patel at conference" },
+                { src: "/images/jay-4.jpg", alt: "Jay Patel professional" },
+              ]}
+              interval={4000}
+            />
+
+            {/* Bio */}
             <div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">The Story So Far</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">The Story So Far</h2>
               <p className="leading-relaxed mb-4" style={{ color: "var(--fg-muted)" }}>
                 Forward-thinking executive with 12 years of experience engineering resilient, data-driven supply chains across healthcare, semiconductor, pharmaceutical, automotive, and food &amp; beverage industries.
               </p>
               <p className="leading-relaxed mb-4" style={{ color: "var(--fg-muted)" }}>
-                My approach combines deep analytical rigor with cross-functional collaboration — from managing a $480M P&L at a leading medical device manufacturer to driving $21M in cost savings across 6 billion bottles of annual production.
+                My approach combines deep analytical rigor with cross-functional collaboration — from managing a $480M P&L at a leading medical device manufacturer to driving $21M in cost savings.
               </p>
               <p className="leading-relaxed" style={{ color: "var(--fg-muted)" }}>
                 As a Forbes Business Council member and published researcher, I&apos;m committed to advancing the field through thought leadership and practical innovation in Digital Twin technology and AI-driven operations.
@@ -164,33 +178,35 @@ export default function Home() {
                 ))}
               </div>
             </div>
+
+            {/* Education + Stats */}
             <div className="space-y-8">
               <div>
                 <h3 className="text-sm uppercase tracking-[0.3em] mb-6" style={{ color: "var(--gold)" }}>Education</h3>
                 {education.map((edu) => (
                   <div key={edu.degree} className="flex justify-between items-start gap-4 mb-5 pb-5" style={{ borderBottom: "1px solid var(--border)" }}>
                     <div>
-                      <p className="font-semibold">{edu.degree}</p>
-                      <p className="text-sm mt-0.5" style={{ color: "var(--fg-dim)" }}>{edu.school}</p>
+                      <p className="font-semibold text-sm">{edu.degree}</p>
+                      <p className="text-xs mt-0.5" style={{ color: "var(--fg-dim)" }}>{edu.school}</p>
                     </div>
-                    <span className="text-sm shrink-0" style={{ color: "var(--gold)" }}>{edu.year}</span>
+                    <span className="text-xs shrink-0" style={{ color: "var(--gold)" }}>{edu.year}</span>
                   </div>
                 ))}
               </div>
-              <div className="flex gap-12">
+              {/* <div className="flex gap-8">
                 <div className="text-center">
                   <div className="text-4xl font-bold" style={{ color: "var(--gold)" }}>9</div>
                   <p className="mt-1 text-xs uppercase tracking-wider" style={{ color: "var(--fg-dim)" }}>Awards</p>
                 </div>
                 <div className="text-center">
                   <div className="text-4xl font-bold" style={{ color: "var(--gold)" }}>21</div>
-                  <p className="mt-1 text-xs uppercase tracking-wider" style={{ color: "var(--fg-dim)" }}>Competition Wins</p>
+                  <p className="mt-1 text-xs uppercase tracking-wider" style={{ color: "var(--fg-dim)" }}>Wins</p>
                 </div>
                 <div className="text-center">
                   <div className="text-4xl font-bold" style={{ color: "var(--gold)" }}>16</div>
-                  <p className="mt-1 text-xs uppercase tracking-wider" style={{ color: "var(--fg-dim)" }}>Research Papers</p>
+                  <p className="mt-1 text-xs uppercase tracking-wider" style={{ color: "var(--fg-dim)" }}>Papers</p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </SectionReveal>
@@ -242,11 +258,11 @@ export default function Home() {
                       <span key={tag} className="text-xs px-2 py-1 rounded-full" style={{ background: "var(--gold-subtle)", color: "var(--gold)" }}>{tag}</span>
                     ))}
                   </div>
-                  <ul className="space-y-1.5">
+                  {/* <ul className="space-y-1.5">
                     {exp.highlights.map((h, j) => (
                       <li key={j} className="text-sm leading-relaxed" style={{ color: "var(--fg-muted)" }}>• {h}</li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </div>
               </motion.div>
             ))}
@@ -423,29 +439,11 @@ export default function Home() {
                 </a>
               </div>
               <div>
-                <h3 className="text-sm uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>Phone</h3>
-                <a href={`tel:${siteConfig.phone}`} className="text-lg transition-colors hover:text-[var(--gold)]" style={{ color: "var(--fg-muted)" }}>
-                  {siteConfig.phone}
-                </a>
-              </div>
-              <div>
                 <h3 className="text-sm uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>LinkedIn</h3>
                 <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer"
                   className="text-lg transition-colors hover:text-[var(--gold)]" style={{ color: "var(--fg-muted)" }}>
                   Connect on LinkedIn →
                 </a>
-              </div>
-              <div className="p-6 border rounded-2xl" style={{ borderColor: "var(--border-hover)", background: "var(--gold-subtle)" }}>
-                <div className="text-sm uppercase tracking-wider mb-2" style={{ color: "var(--gold)" }}>Forbes Business Council</div>
-                <p className="text-sm" style={{ color: "var(--fg-dim)" }}>
-                  Member since 2023. Contributing author on supply chain innovation and digital transformation.
-                </p>
-              </div>
-              <div className="p-6 border rounded-2xl" style={{ borderColor: "var(--border)", background: "var(--card-bg)" }}>
-                <div className="text-sm uppercase tracking-wider mb-2" style={{ color: "var(--gold)" }}>💬 AI Assistant</div>
-                <p className="text-sm" style={{ color: "var(--fg-dim)" }}>
-                  Use the chat icon in the bottom-right to ask Jay&apos;s AI assistant anything about his background, skills, or experience.
-                </p>
               </div>
             </div>
           </div>

@@ -9,9 +9,6 @@ export default function Footer() {
           © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
         </div>
         <div className="flex gap-6">
-          <Link href="/contact" className="text-sm transition-colors hover:text-[var(--gold)]" style={{ color: "var(--fg-muted)" }}>
-            Contact
-          </Link>
           <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="text-sm transition-colors hover:text-[var(--gold)]" style={{ color: "var(--fg-muted)" }}>
             LinkedIn
           </a>

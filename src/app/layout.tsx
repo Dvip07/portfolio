@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   title: "Jay Patel | Global Supply Chain Leader",
   description:
     "Portfolio of Jay Patel — Global Supply Chain & Operations Leader, Six Sigma Black Belt, Forbes Council Member.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

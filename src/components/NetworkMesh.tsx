@@ -32,16 +32,16 @@ export default function NetworkMesh() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Create nodes
-    const count = Math.min(60, Math.floor((canvas.offsetWidth * canvas.offsetHeight) / 15000));
+    // More nodes, bigger spread
+    const count = Math.min(50, Math.floor((canvas.offsetWidth * canvas.offsetHeight) / 18000));
     const nodes: Node[] = [];
     for (let i = 0; i < count; i++) {
       nodes.push({
         x: Math.random() * canvas.offsetWidth,
         y: Math.random() * canvas.offsetHeight,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        radius: Math.random() * 1.5 + 1,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() * 2 + 1.5,
         pulseOffset: Math.random() * Math.PI * 2,
       });
     }
@@ -54,7 +54,7 @@ export default function NetworkMesh() {
     canvas.addEventListener("mousemove", handleMouse);
 
     let time = 0;
-    const connectionDist = 150;
+    const connectionDist = 170; // longer connections = more visible web
 
     const animate = () => {
       time += 0.01;
@@ -62,49 +62,43 @@ export default function NetworkMesh() {
       const h = canvas.offsetHeight;
       ctx.clearRect(0, 0, w, h);
 
-      // Get theme colors
       const style = getComputedStyle(document.documentElement);
       const gold = style.getPropertyValue("--gold").trim() || "#c9a84c";
-      const fgFaint = style.getPropertyValue("--fg-faint").trim() || "rgba(250,250,250,0.2)";
 
       // Update nodes
       for (const node of nodes) {
         node.x += node.vx;
         node.y += node.vy;
-
-        // Bounce off edges
         if (node.x < 0 || node.x > w) node.vx *= -1;
         if (node.y < 0 || node.y > h) node.vy *= -1;
         node.x = Math.max(0, Math.min(w, node.x));
         node.y = Math.max(0, Math.min(h, node.y));
 
         // Mouse repulsion
-        const mx = mouseRef.current.x;
-        const my = mouseRef.current.y;
-        const mdx = node.x - mx;
-        const mdy = node.y - my;
+        const mdx = node.x - mouseRef.current.x;
+        const mdy = node.y - mouseRef.current.y;
         const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-        if (mDist < 120 && mDist > 0) {
-          const force = (120 - mDist) / 120 * 0.5;
+        if (mDist < 150 && mDist > 0) {
+          const force = (150 - mDist) / 150 * 0.8;
           node.x += (mdx / mDist) * force;
           node.y += (mdy / mDist) * force;
         }
       }
 
-      // Draw connections
+      // Draw connections — much more visible
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < connectionDist) {
-            const opacity = (1 - dist / connectionDist) * 0.15;
+            const opacity = (1 - dist / connectionDist) * 0.25;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.strokeStyle = gold;
             ctx.globalAlpha = opacity;
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = 0.8;
             ctx.stroke();
             ctx.globalAlpha = 1;
           }
@@ -116,19 +110,27 @@ export default function NetworkMesh() {
         const pulse = Math.sin(time * 2 + node.pulseOffset) * 0.3 + 0.7;
         const r = node.radius * pulse;
 
-        // Glow
+        // Outer glow ring
         ctx.beginPath();
-        ctx.arc(node.x, node.y, r * 3, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, r * 5, 0, Math.PI * 2);
         ctx.fillStyle = gold;
-        ctx.globalAlpha = 0.03;
+        ctx.globalAlpha = 0.04;
         ctx.fill();
         ctx.globalAlpha = 1;
 
-        // Core dot
+        // Mid glow
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, r * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = gold;
+        ctx.globalAlpha = 0.08;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // Core dot — bright
         ctx.beginPath();
         ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = fgFaint;
-        ctx.globalAlpha = 0.4 * pulse;
+        ctx.fillStyle = gold;
+        ctx.globalAlpha = 0.6 * pulse;
         ctx.fill();
         ctx.globalAlpha = 1;
       }
