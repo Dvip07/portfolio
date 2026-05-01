@@ -10,7 +10,7 @@ export const siteConfig = {
 export const stats = [
   { label: "P&L Managed", value: 480, prefix: "$", suffix: "M" },
   { label: "Suppliers Managed", value: 554, prefix: "", suffix: "+" },
-  { label: "$21M Cost Savings", value: 21, prefix: "$", suffix: "M" },
+  { label: "Cost Savings", value: 21, prefix: "$", suffix: "M" },
   { label: "Research Papers", value: 16, prefix: "", suffix: "" },
   { label: "Industry Awards", value: 9, prefix: "", suffix: "" },
   { label: "Competition Wins", value: 21, prefix: "", suffix: "" },
